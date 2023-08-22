@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ProjectInit.API.Controllers;
 
 [ApiController]
-[Route("api/v{version:apiVersion::int}/[controller]")]
+[Route("api/[controller]")]
 public class BaseApiController: Controller
 {
     private readonly Lazy<IMediator> _mediatorLazy;
