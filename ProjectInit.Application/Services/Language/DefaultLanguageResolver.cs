@@ -22,15 +22,12 @@ public class DefaultLanguageResolver : ILanguageResolver
             }
         }
 
-        lang = GetLanguageToLowered();
+        lang = GetLanguage();
 
         _httpContext.Response.Cookies.Append("lang", lang);
         return Task.FromResult(lang.ToLower());
     }
 
-
-    private string GetLanguageToLowered()
-        => GetLanguage().ToLower();
 
     private string GetLanguage()
     {
@@ -39,6 +36,6 @@ public class DefaultLanguageResolver : ILanguageResolver
 
         return _httpContext.Request.Query.TryGetValue("lang", out lang)
             ? lang.First()
-            : "en";
+            : "";
     }
 }
