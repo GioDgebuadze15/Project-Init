@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,13 +18,9 @@ public static class DatabaseRegistration
     public static IServiceCollection AddDatabase(this IServiceCollection @this, IConfiguration configuration,
         ILoggerFactory iLoggerFactory, IHostEnvironment env)
     {
-        // @this.AddIdentity<IdentityUser, IdentityRole>(options =>
-        //     {
-        //         options.Password.RequireNonAlphanumeric = false;
-        //         options.Password.RequiredLength = 8;
-        //     })
-        //     .AddEntityFrameworkStores<AppDbContext>()
-        //     .AddDefaultTokenProviders();
+        @this.AddIdentity<IdentityUser, IdentityRole>(IdentitySetupAction(env))
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
 
         if (env.IsProduction())
         {
@@ -44,4 +41,28 @@ public static class DatabaseRegistration
 
         return @this;
     }
+
+    private static Action<IdentityOptions>? IdentitySetupAction(IHostEnvironment env)
+        =>
+            env.IsProduction()
+                ? new Action<IdentityOptions>(options =>
+                {
+                    options.Password.RequireDigit = true;
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireUppercase = true;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.User.RequireUniqueEmail = true;
+                    options.SignIn.RequireConfirmedEmail = false;
+                })
+                : env.IsDevelopment()
+                    ? new Action<IdentityOptions>(options =>
+                    {
+                        options.Password.RequireDigit = false;
+                        options.Password.RequiredLength = 4;
+                        options.Password.RequireLowercase = false;
+                        options.Password.RequireUppercase = false;
+                        options.Password.RequireNonAlphanumeric = false;
+                    })
+                    : null;
 }
