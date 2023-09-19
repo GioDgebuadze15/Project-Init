@@ -5,16 +5,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ProjectInit.Application.Constants;
 using ProjectInit.Domain;
 
 namespace ProjectInit.Infrastructure.ServiceRegistrations;
 
 public static class DatabaseRegistration
 {
-    //Todo:move this into constants file
-    private const string PostgreConnectionName = "DefaultDb";
-    private const string InMemoryDatabaseName = "DefaultDb";
-
     public static IServiceCollection AddDatabase(this IServiceCollection @this, IConfiguration configuration,
         ILoggerFactory iLoggerFactory, IHostEnvironment env)
     {
@@ -26,7 +23,7 @@ public static class DatabaseRegistration
         {
             @this.AddDbContext<AppDbContext>(options =>
             {
-                options.UseNpgsql(configuration.GetConnectionString(PostgreConnectionName)!,
+                options.UseNpgsql(configuration.GetConnectionString(DatabaseConstants.PostgreConnectionName)!,
                         b => b.MigrationsAssembly(
                             Assembly.GetCallingAssembly().FullName
                         ))
@@ -36,7 +33,7 @@ public static class DatabaseRegistration
         else if (env.IsDevelopment())
         {
             @this.AddDbContext<AppDbContext>(options =>
-                options.UseInMemoryDatabase(InMemoryDatabaseName));
+                options.UseInMemoryDatabase(DatabaseConstants.InMemoryDatabaseName));
         }
 
         return @this;

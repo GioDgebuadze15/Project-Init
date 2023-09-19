@@ -1,25 +1,21 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ProjectInit.Application.Constants;
 
 namespace ProjectInit.Infrastructure.ServiceRegistrations;
 
 public static class CorsRegistration
 {
-    //Todo: move this into constants file
-    private const string VueClientOrigin = "http://localhost:8080";
-    private const string AllowVueClientName = "AllowVueClient";
-    private const string AllowAllClientsName = "AllowAllClients";
-    
     public static IServiceCollection AddApiCors(this IServiceCollection @this, IHostEnvironment env)
     {
         @this.AddCors(corsOptions =>
         {
             if (env.IsProduction())
             {
-                corsOptions.AddPolicy(AllowVueClientName, policy =>
+                corsOptions.AddPolicy(ClientConstants.AllowVueClientName, policy =>
                 {
-                    policy.WithOrigins(VueClientOrigin)
+                    policy.WithOrigins(ClientConstants.VueClientOrigin)
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();
@@ -27,7 +23,7 @@ public static class CorsRegistration
             }
             else if (env.IsDevelopment())
             {
-                corsOptions.AddPolicy(AllowAllClientsName, policy =>
+                corsOptions.AddPolicy(ClientConstants.AllowAllClientsName, policy =>
                 {
                     policy.AllowAnyOrigin()
                         .AllowAnyHeader()
@@ -43,11 +39,11 @@ public static class CorsRegistration
     public static IApplicationBuilder UseApiCors(this IApplicationBuilder @this, IHostEnvironment env)
     {
         var policyName = env.IsProduction()
-            ? nameof(AllowVueClientName)
+            ? nameof(ClientConstants.AllowVueClientName)
             : env.IsDevelopment()
-                ? nameof(AllowAllClientsName)
-                : "";
-        
+                ? nameof(ClientConstants.AllowAllClientsName)
+                : ClientConstants.DefaultPolicyName;
+
         @this.UseCors(policyName);
 
         return @this;

@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using System.Reflection;
 using ProjectInit.API.Middlewares;
+using ProjectInit.Application.Constants;
 using ProjectInit.Application.Services.Language;
 using ProjectInit.Infrastructure.ServiceRegistrations;
 using Transmogrify.DependencyInjection.Newtonsoft;
@@ -21,8 +22,8 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddNewtonsoftTransmogrify(config =>
 {
-    config.DefaultLanguage = "en";
-    config.LanguagePath = Path.Combine(builder.Environment.ContentRootPath, "Languages");
+    config.DefaultLanguage = LanguageConstants.DefaultLanguageCode;
+    config.LanguagePath = Path.Combine(builder.Environment.ContentRootPath, LanguageConstants.LanguageFolder);
     config.AddResolver(typeof(DefaultLanguageResolver));
 });
 
@@ -34,11 +35,11 @@ builder.Services
             configuration.RegisterServicesFromAssemblies(
                 Assembly.GetExecutingAssembly()
             ))
-    .AddHttpClient("default",
+    .AddHttpClient(ProjectInitConstants.HttpClientName,
         configureClient =>
         {
             configureClient.DefaultRequestHeaders.Accept
-                .Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                .Add(new MediaTypeWithQualityHeaderValue(ProjectInitConstants.DefaultContentType));
         });
 
 var app = builder.Build();
