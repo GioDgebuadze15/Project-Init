@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using ProjectInit.Application.Constants;
 using Transmogrify;
 
 namespace ProjectInit.Application.Services.Language;
@@ -14,7 +15,7 @@ public class DefaultLanguageResolver : ILanguageResolver
 
     public Task<string> GetLanguageCode()
     {
-        if (_httpContext.Request.Cookies.TryGetValue("lang", out var lang))
+        if (_httpContext.Request.Cookies.TryGetValue(LanguageConstants.LanguageKey, out var lang))
         {
             if (!string.IsNullOrWhiteSpace(lang))
             {
@@ -24,18 +25,18 @@ public class DefaultLanguageResolver : ILanguageResolver
 
         lang = GetLanguage();
 
-        _httpContext.Response.Cookies.Append("lang", lang);
+        _httpContext.Response.Cookies.Append(LanguageConstants.LanguageKey, lang);
         return Task.FromResult(lang.ToLower());
     }
 
 
     private string GetLanguage()
     {
-        if (_httpContext.Request.Headers.TryGetValue("Accept-Language", out var lang))
+        if (_httpContext.Request.Headers.TryGetValue(LanguageConstants.LanguageHeadersKey, out var lang))
             return lang.First();
 
-        return _httpContext.Request.Query.TryGetValue("lang", out lang)
+        return _httpContext.Request.Query.TryGetValue(LanguageConstants.LanguageKey, out lang)
             ? lang.First()
-            : "";
+            : LanguageConstants.EmptyLanguageCode;
     }
 }

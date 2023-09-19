@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using ProjectInit.Application.Constants;
 using ProjectInit.Application.Responses;
 
 namespace ProjectInit.API.Middlewares;
@@ -15,7 +16,7 @@ public class ErrorHandlerMiddleware
         _next = next;
         _logger = logger;
     }
-    
+
     public async Task Invoke(HttpContext context)
     {
         try
@@ -25,7 +26,7 @@ public class ErrorHandlerMiddleware
         catch (Exception e)
         {
             var response = context.Response;
-            response.ContentType = "application/json";
+            response.ContentType = ProjectInitConstants.DefaultContentType;
             var responseModel = BaseResponse.Fail(e.Message);
 
             response.StatusCode = e switch
@@ -36,10 +37,10 @@ public class ErrorHandlerMiddleware
                 DbUpdateConcurrencyException => StatusCodes.Status409Conflict,
                 _ => StatusCodes.Status500InternalServerError
             };
-            
+
             var result = JsonConvert.SerializeObject(responseModel);
             await response.WriteAsync(result);
-            _logger.LogError(e, "Api threw an exception");
+            _logger.LogError(e, LoggerConstants.LoggerMessage);
         }
     }
 }
