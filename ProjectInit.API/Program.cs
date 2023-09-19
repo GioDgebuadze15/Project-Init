@@ -1,4 +1,6 @@
+using System.Net.Http.Headers;
 using System.Reflection;
+using ProjectInit.API.Middlewares;
 using ProjectInit.Application.Services.Language;
 using ProjectInit.Infrastructure.ServiceRegistrations;
 using Transmogrify.DependencyInjection.Newtonsoft;
@@ -7,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
+var loggerFactory = builder.Services.AddLoggerFactory(builder.Environment);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -23,10 +26,9 @@ builder.Services.AddNewtonsoftTransmogrify(config =>
     config.AddResolver(typeof(DefaultLanguageResolver));
 });
 
-//Todo:pass iLoggerFactory here
 builder.Services
     .AddApiServices()
-    .AddDatabase(builder.Configuration,null,builder.Environment)
+    .AddDatabase(builder.Configuration, loggerFactory, builder.Environment)
     .AddMediatR(
         configuration =>
             configuration.RegisterServicesFromAssemblies(
@@ -36,9 +38,8 @@ builder.Services
         configureClient =>
         {
             configureClient.DefaultRequestHeaders.Accept
-                .Add(new("application/json"));
+                .Add(new MediaTypeWithQualityHeaderValue("application/json"));
         });
-
 
 var app = builder.Build();
 app.UseApiCors(app.Environment);
@@ -49,13 +50,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-if (app.Environment.IsProduction())
-{
-    var iLogger = app.Services.GetRequiredService<ILoggerFactory>();
-    app.UseLoggerFactory(iLogger);
-}
-
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseAuthorization();
 

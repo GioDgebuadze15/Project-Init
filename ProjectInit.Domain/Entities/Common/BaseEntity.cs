@@ -5,15 +5,15 @@ public abstract class BaseEntity
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public string? CreatedBy { get; set; }
 
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
-    public string? UpdatedBy { get; set; }
+    public DateTime UpdatedAt { private get; set; } = DateTime.Now;
+    public string? UpdatedBy {  private get; set; }
 
-    public DateTime? DeletedAt { get; private set; }
+    public DateTime? DeletedAt { private get; set; }
 
     public bool Deleted
     {
         //Todo: Correct this
-        get => true;
+        private get => true;
         set
         {
             if (value)

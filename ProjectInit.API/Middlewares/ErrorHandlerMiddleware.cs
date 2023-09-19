@@ -10,7 +10,7 @@ public class ErrorHandlerMiddleware
     private readonly RequestDelegate _next;
     private readonly ILogger _logger;
 
-    public ErrorHandlerMiddleware(RequestDelegate next, ILogger logger)
+    public ErrorHandlerMiddleware(RequestDelegate next, ILogger<ErrorHandlerMiddleware> logger)
     {
         _next = next;
         _logger = logger;
@@ -36,7 +36,7 @@ public class ErrorHandlerMiddleware
                 DbUpdateConcurrencyException => StatusCodes.Status409Conflict,
                 _ => StatusCodes.Status500InternalServerError
             };
-
+            
             var result = JsonConvert.SerializeObject(responseModel);
             await response.WriteAsync(result);
             _logger.LogError(e, "Api threw an exception");

@@ -1,13 +1,24 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Events;
 
 namespace ProjectInit.Infrastructure.ServiceRegistrations;
 
 public static class LoggerRegistration
 {
-    public static IApplicationBuilder UseLoggerFactory(this IApplicationBuilder @this, ILoggerFactory loggerFactory)
+    public static ILoggerFactory AddLoggerFactory(this IServiceCollection @this, IHostEnvironment env)
     {
-        loggerFactory.AddFile("Logs/api-{Date}.log");
-        return @this;
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Logger(lc => lc
+                .Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Debug && env.IsDevelopment())
+                .WriteTo.Console())
+            .WriteTo.Logger(lc => lc
+                .Filter.ByIncludingOnly(_ => env.IsProduction())
+                .WriteTo.File($"Logs/api-{DateTime.Now:yyyy-MM-dd}.log"))
+            .CreateLogger();
+
+        return LoggerFactory.Create(builder => { builder.AddSerilog(Log.Logger); });
     }
 }
