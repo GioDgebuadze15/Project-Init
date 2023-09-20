@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProjectInit.Application.Exceptions;
 using ProjectInit.Application.Responses;
+using ProjectInit.Domain.Entities.Common;
 using Transmogrify;
 
 namespace ProjectInit.API.Controllers;
@@ -16,7 +18,7 @@ public class TestController:BaseApiController
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        // throw new Exception("sda");
+        throw new EntityNotFoundException<BaseEntity,string>("50");
         var error =  await _translator.GetTranslation("Errors", "Hello");
         return Ok(BaseResponse.Fail(error));
     }

@@ -40,7 +40,7 @@ public class AppDbContext
         }
 
         var response = await base.SaveChangesAsync(cancellationToken);
-        if (response <= 0) throw new DbUpdateConcurrencyException("No changes were saved to the database.");
+        if (response <= 0) throw new DbUpdateConcurrencyException();
 
         return response;
     }

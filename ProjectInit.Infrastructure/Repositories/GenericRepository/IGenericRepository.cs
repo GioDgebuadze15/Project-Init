@@ -20,10 +20,9 @@ public interface IGenericRepository<TEntity> where TEntity : class
 
     Task<IEnumerable<TEntity>> GetAllAsync();
 
-    IQueryable<TEntity> GetById(int id);
+    IQueryable<TEntity> GetById<TKey>(TKey id) where TKey : notnull;
 
-
-    Task<TEntity> GetByIdAsync(int id);
+    Task<TEntity> GetByIdAsync<TKey>(TKey id) where TKey : notnull;
 
     #endregion
 

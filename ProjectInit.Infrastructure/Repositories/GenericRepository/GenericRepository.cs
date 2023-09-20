@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProjectInit.Application.Exceptions;
 using ProjectInit.Domain;
 using ProjectInit.Domain.Entities.Common;
 
@@ -58,20 +59,22 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity>
     public async Task<IEnumerable<TEntity>> GetAllAsync()
         => await _dbSet.ToListAsync();
 
-    public IQueryable<TEntity> GetById(int id)
+    public IQueryable<TEntity> GetById<TKey>(TKey id)
+        where TKey : notnull
     {
         var entity = _dbSet.Find(id);
         return entity is null
-            ? throw new InvalidOperationException($"Entity with id {id} was not found.")
+            ? throw new EntityNotFoundException<TEntity,TKey>(id)
             : _dbSet.Where(x => x.Equals(entity)).AsQueryable();
     }
 
 
-    public async Task<TEntity> GetByIdAsync(int id)
+    public async Task<TEntity> GetByIdAsync<TKey>(TKey id)
+        where TKey : notnull
     {
         var entity = await _dbSet.FindAsync(id);
         return entity is null
-            ? throw new InvalidOperationException($"Entity with id {id} was not found.")
+            ? throw new EntityNotFoundException<TEntity,TKey>(id)
             : await _dbSet.Where(x => x.Equals(entity)).FirstAsync();
     }
 

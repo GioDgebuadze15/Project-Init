@@ -8,7 +8,7 @@ using Transmogrify.DependencyInjection.Newtonsoft;
 
 var builder = WebApplication.CreateBuilder(args);
 
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+AppContext.SetSwitch(DatabaseConstants.PostgreBehavior, true);
 
 var loggerFactory = builder.Services.AddLoggerFactory(builder.Environment);
 

@@ -7,4 +7,5 @@ public abstract class LanguageConstants
     public const string LanguageKey = "lang";
     public const string LanguageHeadersKey = "Accept-Language";
     public const string EmptyLanguageCode = "Languages";
+    public const string ErrorsFileName = "Errors";
 }
