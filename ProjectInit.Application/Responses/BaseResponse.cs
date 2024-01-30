@@ -14,5 +14,5 @@ public class BaseResponse
     public static BaseResponse Ok(string message) => new(message, true);
     public static BaseResponse<T> Ok<T>(string message, T value) where T : notnull => new(message, value);
     public static BaseResponse Fail(string message) => new(message);
-    public static BaseResponse<T> Fail<T>(string message, T value) where T : notnull => new(message, value);
+    public static BaseResponse<T> Fail<T>(string message) where T : notnull => new(message);
 }

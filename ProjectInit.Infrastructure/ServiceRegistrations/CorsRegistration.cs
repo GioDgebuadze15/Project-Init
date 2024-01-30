@@ -42,7 +42,7 @@ public static class CorsRegistration
             ? nameof(ClientConstants.AllowVueClientName)
             : env.IsDevelopment()
                 ? nameof(ClientConstants.AllowAllClientsName)
-                : ClientConstants.DefaultPolicyName;
+                : string.Empty;
 
         @this.UseCors(policyName);
 
