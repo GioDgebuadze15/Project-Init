@@ -16,7 +16,7 @@ public static class LoggerRegistration
                 .WriteTo.Console())
             .WriteTo.Logger(lc => lc
                 .Filter.ByIncludingOnly(_ => env.IsProduction())
-                .WriteTo.File($"Logs/api-{DateTime.Now:yyyy-MM-dd}.log"))
+                .WriteTo.File($"Logs/api-{DateTimeOffset.Now:yyyy-MM-dd}.log"))
             .CreateLogger();
 
         return LoggerFactory.Create(builder => { builder.AddSerilog(Log.Logger); });

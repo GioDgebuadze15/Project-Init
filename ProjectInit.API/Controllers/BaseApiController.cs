@@ -6,16 +6,10 @@ namespace ProjectInit.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class BaseApiController: Controller
+public class BaseApiController : Controller
 {
-    private readonly Lazy<IMediator> _mediatorLazy;
-
-    protected IMediator Mediator => _mediatorLazy.Value;
-
-    public BaseApiController()
-    {
-        _mediatorLazy = new Lazy<IMediator>(() => HttpContext.RequestServices.GetService<IMediator>() ?? throw new InvalidOperationException());
-    }
+    private IMediator? _mediator;
+    protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<IMediator>();
 
     protected string? UserId =>
         HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier)

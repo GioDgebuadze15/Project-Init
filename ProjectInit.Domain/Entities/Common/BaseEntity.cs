@@ -2,23 +2,22 @@
 
 public abstract class BaseEntity
 {
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTimeOffset CreatedAt { get; private init; } = DateTimeOffset.Now;
     public string? CreatedBy { get; set; }
 
-    public DateTime UpdatedAt { private get; set; } = DateTime.Now;
-    public string? UpdatedBy {  private get; set; }
+    public DateTimeOffset UpdatedAt { private get; set; } = DateTimeOffset.Now;
+    public string? UpdatedBy { private get; set; }
 
-    public DateTime? DeletedAt { private get; set; }
+    private DateTimeOffset? DeletedAt { get; set; }
 
     public bool Deleted
     {
-        //Todo: Correct this
-        private get => true;
+        get => DeletedAt is not null && DeletedAt <= DateTimeOffset.Now;
         set
         {
             if (value)
             {
-                DeletedAt = DateTime.Now;
+                DeletedAt = DateTimeOffset.Now;
                 return;
             }
 

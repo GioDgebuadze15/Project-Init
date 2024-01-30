@@ -4,14 +4,9 @@ using Transmogrify;
 
 namespace ProjectInit.Application.Services.Language;
 
-public class DefaultLanguageResolver : ILanguageResolver
+public class DefaultLanguageResolver(IHttpContextAccessor httpContextAccessor) : ILanguageResolver
 {
-    private readonly HttpContext _httpContext;
-
-    public DefaultLanguageResolver(IHttpContextAccessor httpContextAccessor)
-    {
-        _httpContext = httpContextAccessor.HttpContext;
-    }
+    private readonly HttpContext _httpContext = httpContextAccessor.HttpContext;
 
     public Task<string> GetLanguageCode()
     {

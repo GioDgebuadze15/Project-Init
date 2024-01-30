@@ -1,11 +1,14 @@
 ﻿namespace ProjectInit.Application.Responses;
 
 public class BaseResponse<T> : BaseResponse
+    where T : notnull
 {
-    public T Value { get; } = default!;
+    public T? Value { get; }
 
     public BaseResponse(string message)
-        :base(message){}
+        : base(message)
+    {
+    }
 
     public BaseResponse(string message, T value)
         : base(message, true)

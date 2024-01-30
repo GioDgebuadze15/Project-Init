@@ -3,34 +3,27 @@ using Newtonsoft.Json;
 using ProjectInit.Application.Constants;
 using ProjectInit.Application.Exceptions;
 using ProjectInit.Application.Responses;
-using ProjectInit.Domain.Entities.Common;
 using Transmogrify;
 
 namespace ProjectInit.API.Middlewares;
 
-public class ErrorHandlerMiddleware
+public class ErrorHandlerMiddleware(
+    RequestDelegate next,
+    ILogger<ErrorHandlerMiddleware> logger,
+    IServiceProvider serviceProvider)
 {
-    private readonly RequestDelegate _next;
-    private readonly ILogger _logger;
-    private readonly IServiceProvider _serviceProvider;
-
-    public ErrorHandlerMiddleware(RequestDelegate next, ILogger<ErrorHandlerMiddleware> logger,IServiceProvider serviceProvider)
-    {
-        _next = next;
-        _logger = logger;
-        _serviceProvider = serviceProvider;
-    }
+    private readonly ILogger _logger = logger;
 
     public async Task Invoke(HttpContext context)
     {
         try
         {
-            await _next(context);
+            await next(context);
         }
         catch (Exception e)
         {
             // Todo: I dont know exactly why I need this, thus I'm adding ITranslator to DI, so check this code
-            using var scope = _serviceProvider.CreateScope();
+            using var scope = serviceProvider.CreateScope();
             var iTranslator = scope.ServiceProvider.GetRequiredService<ITranslator>();
             
             var response = context.Response;

@@ -1,12 +1,6 @@
 ﻿namespace ProjectInit.Application.Exceptions;
 
-public class EntityNotFoundException<TEntity, TKey> : EntityNotFoundException
+public class EntityNotFoundException<TEntity, TKey>(TKey entityId)
+    : EntityNotFoundException(typeof(TEntity).Name, entityId.ToString())
     where TEntity : notnull
-    where TKey : notnull
-{
-    //TODO: entityId must not be null here, so add some checking somehow
-    public EntityNotFoundException(TKey entityId)
-        : base(typeof(TEntity).Name, entityId.ToString())
-    {
-    }
-}
+    where TKey : notnull;
