@@ -58,7 +58,7 @@ public class GenericRepository<TEntity>(AppDbContext ctx) : IGenericRepository<T
     {
         var entity = _dbSet.Find(id);
         return entity is null
-            ? throw new EntityNotFoundException<TEntity,TKey>(id)
+            ? throw new EntityNotFoundException<TEntity, TKey>(id)
             : _dbSet.Where(x => x.Equals(entity)).AsQueryable();
     }
 
@@ -68,7 +68,7 @@ public class GenericRepository<TEntity>(AppDbContext ctx) : IGenericRepository<T
     {
         var entity = await _dbSet.FindAsync(id);
         return entity is null
-            ? throw new EntityNotFoundException<TEntity,TKey>(id)
+            ? throw new EntityNotFoundException<TEntity, TKey>(id)
             : await _dbSet.Where(x => x.Equals(entity)).FirstAsync();
     }
 
@@ -95,18 +95,13 @@ public class GenericRepository<TEntity>(AppDbContext ctx) : IGenericRepository<T
 
     #region Delete
 
-    public async Task Delete(TEntity entity, CancellationToken cancellationToken = new())
-        =>
-            await SoftDelete(entity, cancellationToken);
+    public async Task HardDelete(TEntity entity, CancellationToken cancellationToken = new())
+    {
+        _dbSet.Remove(entity);
+        await SaveChangesAsync(cancellationToken);
+    }
 
-    public async Task DeleteRange(IEnumerable<TEntity> entities, CancellationToken cancellationToken = new())
-        => await SoftDeleteRange(entities, cancellationToken);
-
-    #endregion
-
-    #region PrivateMethods
-
-    private async Task SoftDelete(TEntity entity, CancellationToken cancellationToken = new())
+    public async Task SoftDelete(TEntity entity, CancellationToken cancellationToken = new())
     {
         if (entity is not BaseEntity baseEntity)
             throw new ArgumentException(ExceptionConstants.BaseEntityException);
@@ -115,10 +110,15 @@ public class GenericRepository<TEntity>(AppDbContext ctx) : IGenericRepository<T
         ctx.Attach(baseEntity);
         ctx.Entry(entity).State = EntityState.Modified;
         await SaveChangesAsync(cancellationToken);
-        throw new ArgumentException(ExceptionConstants.BaseEntityException);
     }
 
-    private async Task SoftDeleteRange(IEnumerable<TEntity> entities,
+    public async Task HardDeleteRange(IEnumerable<TEntity> entities, CancellationToken cancellationToken = new())
+    {
+        _dbSet.RemoveRange(entities);
+        await SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task SoftDeleteRange(IEnumerable<TEntity> entities,
         CancellationToken cancellationToken = new())
     {
         foreach (var entity in entities)
@@ -132,7 +132,6 @@ public class GenericRepository<TEntity>(AppDbContext ctx) : IGenericRepository<T
         }
 
         await SaveChangesAsync(cancellationToken);
-        throw new ArgumentException(ExceptionConstants.BaseEntityException);
     }
 
     #endregion
@@ -140,9 +139,7 @@ public class GenericRepository<TEntity>(AppDbContext ctx) : IGenericRepository<T
     #region ProtectedMethods
 
     protected virtual async Task SaveChangesAsync(CancellationToken cancellationToken = new())
-    {
-        await ctx.SaveChangesAsync(cancellationToken);
-    }
+        => await ctx.SaveChangesAsync(cancellationToken);
 
     #endregion
 }

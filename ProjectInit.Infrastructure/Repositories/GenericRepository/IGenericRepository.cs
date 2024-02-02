@@ -36,8 +36,10 @@ public interface IGenericRepository<TEntity> where TEntity : class
 
     #region Delete
 
-    Task Delete(TEntity entity, CancellationToken cancellationToken = new());
-    Task DeleteRange(IEnumerable<TEntity> entities, CancellationToken cancellationToken = new());
+    Task HardDelete(TEntity entity, CancellationToken cancellationToken = new());
+    Task SoftDelete(TEntity entity, CancellationToken cancellationToken = new());
+    Task HardDeleteRange(IEnumerable<TEntity> entities, CancellationToken cancellationToken = new());
+    Task SoftDeleteRange(IEnumerable<TEntity> entities, CancellationToken cancellationToken = new());
 
     #endregion
 }
