@@ -6,11 +6,9 @@ namespace ProjectInit.Application.Services.Language;
 
 public class DefaultLanguageResolver(IHttpContextAccessor httpContextAccessor) : ILanguageResolver
 {
-    private readonly HttpContext _httpContext = httpContextAccessor.HttpContext;
-
     public Task<string> GetLanguageCode()
     {
-        if (_httpContext.Request.Cookies.TryGetValue(LanguageConstants.LanguageKey, out var lang))
+        if (httpContextAccessor.HttpContext.Request.Cookies.TryGetValue(LanguageConstants.LanguageKey, out var lang))
         {
             if (!string.IsNullOrWhiteSpace(lang))
             {
@@ -20,17 +18,18 @@ public class DefaultLanguageResolver(IHttpContextAccessor httpContextAccessor) :
 
         lang = GetLanguage();
 
-        _httpContext.Response.Cookies.Append(LanguageConstants.LanguageKey, lang);
+        httpContextAccessor.HttpContext.Response.Cookies.Append(LanguageConstants.LanguageKey, lang);
         return Task.FromResult(lang.ToLower());
     }
 
 
     private string GetLanguage()
     {
-        if (_httpContext.Request.Headers.TryGetValue(LanguageConstants.LanguageHeadersKey, out var lang))
+        if (httpContextAccessor.HttpContext.Request.Headers.TryGetValue(LanguageConstants.LanguageHeadersKey,
+                out var lang))
             return lang.First();
 
-        return _httpContext.Request.Query.TryGetValue(LanguageConstants.LanguageKey, out lang)
+        return httpContextAccessor.HttpContext.Request.Query.TryGetValue(LanguageConstants.LanguageKey, out lang)
             ? lang.First()
             : LanguageConstants.EmptyLanguageCode;
     }

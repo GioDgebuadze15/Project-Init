@@ -3,6 +3,7 @@ using ProjectInit.Application.Constants;
 using ProjectInit.Application.Exceptions;
 using ProjectInit.Domain;
 using ProjectInit.Domain.Entities.Common;
+using ProjectInit.Persistence;
 
 namespace ProjectInit.Infrastructure.Repositories.GenericRepository;
 

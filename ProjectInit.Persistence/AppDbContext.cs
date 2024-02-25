@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ProjectInit.Domain.Entities.Common;
 
-namespace ProjectInit.Domain;
+namespace ProjectInit.Persistence;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options, IHttpContextAccessor httpContextAccessor)
     : IdentityDbContext<IdentityUser>(options)

@@ -5,10 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using ProjectInit.Application.Constants;
-using ProjectInit.Domain;
 
-namespace ProjectInit.Infrastructure.ServiceRegistrations;
+namespace ProjectInit.Persistence.DatabaseRegistrations;
 
 public static class DatabaseRegistration
 {

@@ -4,6 +4,7 @@ using ProjectInit.API.Middlewares;
 using ProjectInit.Application.Constants;
 using ProjectInit.Application.Services.Language;
 using ProjectInit.Infrastructure.ServiceRegistrations;
+using ProjectInit.Persistence.DatabaseRegistrations;
 using Transmogrify.DependencyInjection.Newtonsoft;
 
 var builder = WebApplication.CreateBuilder(args);
