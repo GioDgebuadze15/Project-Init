@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProjectInit.Application.Constants;
-using ProjectInit.Application.Exceptions;
-using ProjectInit.Domain;
 using ProjectInit.Domain.Entities.Common;
 using ProjectInit.Persistence;
+using ProjectInit.Shared.Constants;
+using ProjectInit.Shared.Exceptions;
 
 namespace ProjectInit.Infrastructure.Repositories.GenericRepository;
 

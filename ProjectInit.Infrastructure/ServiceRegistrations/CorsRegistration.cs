@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ProjectInit.Application.Constants;
+using ProjectInit.Shared.Constants;
 
 namespace ProjectInit.Infrastructure.ServiceRegistrations;
 

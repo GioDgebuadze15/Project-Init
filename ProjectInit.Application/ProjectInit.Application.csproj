@@ -14,11 +14,11 @@
       <PackageReference Include="MediatR" Version="12.2.0" />
       <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-      <PackageReference Include="Transmogrify" Version="1.0.4" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\ProjectInit.Domain\ProjectInit.Domain.csproj" />
+      <ProjectReference Include="..\ProjectInit.Shared\ProjectInit.Shared.csproj" />
     </ItemGroup>
 
 

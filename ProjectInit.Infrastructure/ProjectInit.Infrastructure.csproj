@@ -8,8 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ProjectInit.Application\ProjectInit.Application.csproj" />
       <ProjectReference Include="..\ProjectInit.Persistence\ProjectInit.Persistence.csproj" />
+      <ProjectReference Include="..\ProjectInit.Shared\ProjectInit.Shared.csproj" />
     </ItemGroup>
     
     <ItemGroup>
@@ -17,6 +17,7 @@
       <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
       <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
       <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
+      <PackageReference Include="Transmogrify" Version="1.0.4" />
     </ItemGroup>
 
 </Project>

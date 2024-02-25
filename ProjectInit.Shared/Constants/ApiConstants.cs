@@ -1,6 +1,6 @@
-﻿namespace ProjectInit.Application.Constants;
+﻿namespace ProjectInit.Shared.Constants;
 
-public abstract class ProjectInitConstants
+public abstract class ApiConstants
 {
     public const string HttpClientName = "default";
     public const string DefaultContentType = "application/json";

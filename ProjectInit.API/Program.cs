@@ -1,10 +1,11 @@
 using System.Net.Http.Headers;
 using System.Reflection;
 using ProjectInit.API.Middlewares;
-using ProjectInit.Application.Constants;
-using ProjectInit.Application.Services.Language;
 using ProjectInit.Infrastructure.ServiceRegistrations;
+using ProjectInit.Infrastructure.Services.Language;
 using ProjectInit.Persistence.DatabaseRegistrations;
+using ProjectInit.Shared.Constants;
+using ProjectInit.Shared.Helpers;
 using Transmogrify.DependencyInjection.Newtonsoft;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,7 +25,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddNewtonsoftTransmogrify(config =>
 {
     config.DefaultLanguage = LanguageConstants.DefaultLanguageCode;
-    config.LanguagePath = Path.Combine(builder.Environment.ContentRootPath, LanguageConstants.LanguageFolder);
+    config.LanguagePath = LanguageHelper.GetLanguageFolderFullPath();
     config.AddResolver(typeof(DefaultLanguageResolver));
 });
 
@@ -36,11 +37,11 @@ builder.Services
             configuration.RegisterServicesFromAssemblies(
                 Assembly.GetExecutingAssembly()
             ))
-    .AddHttpClient(ProjectInitConstants.HttpClientName,
+    .AddHttpClient(ApiConstants.HttpClientName,
         configureClient =>
         {
             configureClient.DefaultRequestHeaders.Accept
-                .Add(new MediaTypeWithQualityHeaderValue(ProjectInitConstants.DefaultContentType));
+                .Add(new MediaTypeWithQualityHeaderValue(ApiConstants.DefaultContentType));
         });
 
 var app = builder.Build();

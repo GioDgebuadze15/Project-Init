@@ -1,4 +1,4 @@
-﻿namespace ProjectInit.Application.Constants;
+﻿namespace ProjectInit.Shared.Constants;
 
 public abstract class ExceptionConstants
 {

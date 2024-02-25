@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using ProjectInit.Application.Constants;
-using ProjectInit.Application.Exceptions;
 using ProjectInit.Application.Responses;
+using ProjectInit.Shared.Constants;
+using ProjectInit.Shared.Exceptions;
 using Transmogrify;
 
 namespace ProjectInit.API.Middlewares;
@@ -27,7 +27,7 @@ public class ErrorHandlerMiddleware(
             var iTranslator = scope.ServiceProvider.GetRequiredService<ITranslator>();
             
             var response = context.Response;
-            response.ContentType = ProjectInitConstants.DefaultContentType;
+            response.ContentType = ApiConstants.DefaultContentType;
             BaseResponse responseModel;
 
             switch (e)

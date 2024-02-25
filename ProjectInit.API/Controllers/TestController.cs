@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProjectInit.Application.Exceptions;
 using ProjectInit.Application.Responses;
 using ProjectInit.Domain.Entities.Common;
+using ProjectInit.Shared.Exceptions;
 using Transmogrify;
 
 namespace ProjectInit.API.Controllers;

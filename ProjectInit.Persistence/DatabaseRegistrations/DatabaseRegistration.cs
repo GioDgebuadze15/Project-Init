@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ProjectInit.Shared.Constants;
 
 namespace ProjectInit.Persistence.DatabaseRegistrations;
 

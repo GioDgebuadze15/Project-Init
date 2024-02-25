@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
-using ProjectInit.Application.Constants;
+using ProjectInit.Shared.Constants;
 using Transmogrify;
 
-namespace ProjectInit.Application.Services.Language;
+namespace ProjectInit.Infrastructure.Services.Language;
 
 public class DefaultLanguageResolver(IHttpContextAccessor httpContextAccessor) : ILanguageResolver
 {
@@ -27,10 +27,10 @@ public class DefaultLanguageResolver(IHttpContextAccessor httpContextAccessor) :
     {
         if (httpContextAccessor.HttpContext.Request.Headers.TryGetValue(LanguageConstants.LanguageHeadersKey,
                 out var lang))
-            return lang.First();
+            return lang.First() ?? LanguageConstants.EmptyLanguageCode;
 
         return httpContextAccessor.HttpContext.Request.Query.TryGetValue(LanguageConstants.LanguageKey, out lang)
-            ? lang.First()
+            ? lang.First() ?? LanguageConstants.EmptyLanguageCode
             : LanguageConstants.EmptyLanguageCode;
     }
 }

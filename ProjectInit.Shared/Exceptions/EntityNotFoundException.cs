@@ -1,4 +1,4 @@
-﻿namespace ProjectInit.Application.Exceptions;
+﻿namespace ProjectInit.Shared.Exceptions;
 
 public abstract class EntityNotFoundException(string entityType, string entityId)
     : KeyNotFoundException($"{entityType} with Id: {entityId} was not found.")
