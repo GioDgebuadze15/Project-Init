@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using ProjectInit.Domain.Entities;
 using ProjectInit.Domain.Entities.Common;
 
 namespace ProjectInit.Persistence;
@@ -11,6 +12,8 @@ namespace ProjectInit.Persistence;
 public class AppDbContext(DbContextOptions<AppDbContext> options, IHttpContextAccessor httpContextAccessor)
     : IdentityDbContext<IdentityUser>(options)
 {
+    public DbSet<FileEntity> Files { get; init; }
+
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {
         var entities = ChangeTracker.Entries()
@@ -22,15 +25,15 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, IHttpContextAc
 
         foreach (var entity in entities)
         {
-            if (entity.Entity is not BaseEntity updatedEntity) continue;
+            if (entity.Entity is not BaseEntity modifiedEntity) continue;
 
             if (!string.IsNullOrWhiteSpace(userId))
             {
-                updatedEntity.CreatedBy ??= userId;
-                updatedEntity.UpdatedBy = userId;
+                modifiedEntity.CreatedBy ??= userId;
+                modifiedEntity.UpdatedBy = userId;
             }
 
-            updatedEntity.UpdatedAt = DateTimeOffset.Now;
+            modifiedEntity.UpdatedAt = DateTimeOffset.Now;
         }
 
         var response = await base.SaveChangesAsync(cancellationToken);

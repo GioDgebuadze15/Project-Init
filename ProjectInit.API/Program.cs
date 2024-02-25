@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using System.Reflection;
 using ProjectInit.API.Middlewares;
+using ProjectInit.Application.Features.FileFeatures.Commands.Create;
 using ProjectInit.Infrastructure.ServiceRegistrations;
 using ProjectInit.Infrastructure.Services.Language;
 using ProjectInit.Persistence.DatabaseRegistrations;
@@ -35,7 +36,9 @@ builder.Services
     .AddMediatR(
         configuration =>
             configuration.RegisterServicesFromAssemblies(
-                Assembly.GetExecutingAssembly()
+                // Todo: pass application layer assembly instead of specific query
+                typeof(CreateFileCommand).GetTypeInfo().Assembly
+                // Assembly.GetExecutingAssembly()
             ))
     .AddHttpClient(ApiConstants.HttpClientName,
         configureClient =>

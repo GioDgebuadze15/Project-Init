@@ -18,7 +18,7 @@ public class DefaultLanguageResolver(IHttpContextAccessor httpContextAccessor) :
 
         lang = GetLanguage();
 
-        httpContextAccessor.HttpContext.Response.Cookies.Append(LanguageConstants.LanguageKey, lang);
+        httpContextAccessor.HttpContext?.Response.Cookies.Append(LanguageConstants.LanguageKey, lang);
         return Task.FromResult(lang.ToLower());
     }
 
