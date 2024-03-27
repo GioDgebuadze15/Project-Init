@@ -29,11 +29,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, IHttpContextAc
 
             if (!string.IsNullOrWhiteSpace(userId))
             {
-                modifiedEntity.CreatedBy ??= userId;
-                modifiedEntity.UpdatedBy = userId;
+                modifiedEntity.CreateOrUpdateEntity(userId);
             }
 
-            modifiedEntity.UpdatedAt = DateTimeOffset.Now;
+            modifiedEntity.UpdateEntity();
         }
 
         var response = await base.SaveChangesAsync(cancellationToken);

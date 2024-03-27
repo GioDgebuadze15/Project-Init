@@ -2,11 +2,10 @@
 
 public abstract class BaseEntity
 {
-    public DateTimeOffset CreatedAt { get; private init; } = DateTimeOffset.Now;
-    public string? CreatedBy { get; set; }
-
-    public DateTimeOffset UpdatedAt { private get; set; } = DateTimeOffset.Now;
-    public string? UpdatedBy { private get; set; }
+    public DateTimeOffset CreatedAt { get; } = DateTimeOffset.Now;
+    public string? CreatedBy { get; private set; }
+    public DateTimeOffset UpdatedAt { get; private set; } = DateTimeOffset.Now;
+    public string? UpdatedBy { get; private set; }
 
     private DateTimeOffset? DeletedAt { get; set; }
 
@@ -24,4 +23,15 @@ public abstract class BaseEntity
             DeletedAt = default;
         }
     }
+
+
+    public void CreateOrUpdateEntity(string userId)
+    {
+        CreatedBy ??= userId;
+        UpdatedBy = userId;
+    }
+
+    public void UpdateEntity() => UpdatedAt = DateTimeOffset.Now;
+
+    public void SoftDeleteEntity() => Deleted = true;
 }

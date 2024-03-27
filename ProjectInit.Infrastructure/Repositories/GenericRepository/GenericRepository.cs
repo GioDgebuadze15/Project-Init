@@ -106,7 +106,7 @@ public class GenericRepository<TEntity>(AppDbContext ctx) : IGenericRepository<T
         if (entity is not BaseEntity baseEntity)
             throw new ArgumentException(ExceptionConstants.BaseEntityException);
 
-        baseEntity.Deleted = true;
+        baseEntity.SoftDeleteEntity();
         ctx.Attach(baseEntity);
         ctx.Entry(entity).State = EntityState.Modified;
         await SaveChangesAsync(cancellationToken);
@@ -126,7 +126,7 @@ public class GenericRepository<TEntity>(AppDbContext ctx) : IGenericRepository<T
             if (entity is not BaseEntity baseEntity)
                 throw new ArgumentException(ExceptionConstants.BaseEntityException);
 
-            baseEntity.Deleted = true;
+            baseEntity.SoftDeleteEntity();
             ctx.Attach(baseEntity);
             ctx.Entry(entity).State = EntityState.Modified;
         }

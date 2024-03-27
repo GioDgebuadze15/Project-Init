@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Marten;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using ProjectInit.Application.Responses;
+using ProjectInit.Domain.Entities.Common;
 using ProjectInit.Shared.Constants;
 using ProjectInit.Shared.Exceptions;
 using Transmogrify;
@@ -25,6 +27,7 @@ public class ErrorHandlerMiddleware(
             // Todo: I dont know exactly why I need this, thus I'm adding ITranslator to DI, so check this code
             using var scope = serviceProvider.CreateScope();
             var iTranslator = scope.ServiceProvider.GetRequiredService<ITranslator>();
+            var iDocumentSession = scope.ServiceProvider.GetRequiredService<IDocumentSession>();
             
             var response = context.Response;
             response.ContentType = ApiConstants.DefaultContentType;
@@ -74,6 +77,9 @@ public class ErrorHandlerMiddleware(
             var result = JsonConvert.SerializeObject(responseModel);
             await response.WriteAsync(result);
             _logger.LogError(e, LoggerConstants.LoggerMessage);
+            
+            iDocumentSession.Store(new ErrorEntity(e));
+            await iDocumentSession.SaveChangesAsync();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Marten;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ProjectInit.Shared.Constants;
+using Weasel.Core;
 
 namespace ProjectInit.Persistence.DatabaseRegistrations;
 
@@ -34,6 +36,13 @@ public static class DatabaseRegistration
             @this.AddDbContext<AppDbContext>(options =>
                 options.UseInMemoryDatabase(DatabaseConstants.InMemoryDatabaseName));
         }
+
+        @this.AddMarten(options =>
+        {
+            options.Connection(configuration.GetConnectionString(DatabaseConstants.MartenConnectionName)!);
+
+            if (env.IsDevelopment()) options.AutoCreateSchemaObjects = AutoCreate.All;
+        });
 
         return @this;
     }
