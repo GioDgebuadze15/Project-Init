@@ -4,13 +4,13 @@ public interface IGenericRepository<TEntity> where TEntity : class
 {
     #region Create
 
-    Task<TEntity> Add(TEntity entity, CancellationToken cancellationToken = new());
+    Task<TEntity> Add(TEntity entity, CancellationToken cancellationToken = default);
 
-    Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = new());
+    Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default);
 
-    Task AddRange(TEntity[] entities, CancellationToken cancellationToken = new());
+    Task AddRange(TEntity[] entities, CancellationToken cancellationToken = default);
 
-    Task AddRangeAsync(TEntity[] entities, CancellationToken cancellationToken = new());
+    Task AddRangeAsync(TEntity[] entities, CancellationToken cancellationToken = default);
 
     #endregion
 
@@ -28,18 +28,18 @@ public interface IGenericRepository<TEntity> where TEntity : class
 
     #region Update
 
-    Task<TEntity> Update(TEntity entity, CancellationToken cancellationToken = new());
+    Task<TEntity> Update(TEntity entity, CancellationToken cancellationToken = default);
 
-    Task UpdateRange(TEntity[] entities, CancellationToken cancellationToken = new());
+    Task UpdateRange(TEntity[] entities, CancellationToken cancellationToken = default);
 
     #endregion
 
     #region Delete
 
-    Task HardDelete(TEntity entity, CancellationToken cancellationToken = new());
-    Task SoftDelete(TEntity entity, CancellationToken cancellationToken = new());
-    Task HardDeleteRange(IEnumerable<TEntity> entities, CancellationToken cancellationToken = new());
-    Task SoftDeleteRange(IEnumerable<TEntity> entities, CancellationToken cancellationToken = new());
+    Task HardDelete(TEntity entity, CancellationToken cancellationToken = default);
+    Task SoftDelete(TEntity entity, CancellationToken cancellationToken = default);
+    Task HardDeleteRange(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
+    Task SoftDeleteRange(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
 
     #endregion
 }

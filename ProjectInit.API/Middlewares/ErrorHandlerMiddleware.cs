@@ -78,7 +78,7 @@ public class ErrorHandlerMiddleware(
             await response.WriteAsync(result);
             _logger.LogError(e, LoggerConstants.LoggerMessage);
             
-            iDocumentSession.Store(new ErrorEntity(e));
+            iDocumentSession.Store(new Error(e));
             await iDocumentSession.SaveChangesAsync();
         }
     }

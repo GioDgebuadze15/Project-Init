@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ProjectInit.Shared.Constants;
 using Weasel.Core;
+using Wolverine.Marten;
 
 namespace ProjectInit.Persistence.DatabaseRegistrations;
 
@@ -42,7 +43,7 @@ public static class DatabaseRegistration
             options.Connection(configuration.GetConnectionString(DatabaseConstants.MartenConnectionName)!);
 
             if (env.IsDevelopment()) options.AutoCreateSchemaObjects = AutoCreate.All;
-        });
+        }).IntegrateWithWolverine();
 
         return @this;
     }

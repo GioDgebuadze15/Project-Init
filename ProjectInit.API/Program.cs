@@ -8,6 +8,7 @@ using ProjectInit.Persistence.DatabaseRegistrations;
 using ProjectInit.Shared.Constants;
 using ProjectInit.Shared.Helpers;
 using Transmogrify.DependencyInjection.Newtonsoft;
+using Wolverine;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,16 +31,14 @@ builder.Services.AddNewtonsoftTransmogrify(config =>
     config.AddResolver(typeof(DefaultLanguageResolver));
 });
 
+builder.Host.UseWolverine(options =>
+{
+    options.Discovery.IncludeAssembly(typeof(CreateFile).GetTypeInfo().Assembly);
+});
+
 builder.Services
     .AddApiServices()
     .AddDatabase(builder.Configuration, loggerFactory, builder.Environment)
-    .AddMediatR(
-        configuration =>
-            configuration.RegisterServicesFromAssemblies(
-                // Todo: pass application layer assembly instead of specific query
-                typeof(CreateFileCommand).GetTypeInfo().Assembly
-                // Assembly.GetExecutingAssembly()
-            ))
     .AddHttpClient(ApiConstants.HttpClientName,
         configureClient =>
         {
@@ -48,6 +47,7 @@ builder.Services
         });
 
 var app = builder.Build();
+
 app.UseApiCors(app.Environment);
 
 if (app.Environment.IsDevelopment())

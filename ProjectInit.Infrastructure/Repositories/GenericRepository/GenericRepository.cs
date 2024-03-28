@@ -13,7 +13,7 @@ public class GenericRepository<TEntity>(AppDbContext ctx) : IGenericRepository<T
 
     #region Create
 
-    public async Task<TEntity> Add(TEntity entity, CancellationToken cancellationToken = new())
+    public async Task<TEntity> Add(TEntity entity, CancellationToken cancellationToken = default)
     {
         _dbSet.Add(entity);
         ctx.Entry(entity).State = EntityState.Added;
@@ -21,7 +21,7 @@ public class GenericRepository<TEntity>(AppDbContext ctx) : IGenericRepository<T
         return entity;
     }
 
-    public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = new())
+    public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         await _dbSet.AddAsync(entity, cancellationToken);
         ctx.Entry(entity).State = EntityState.Added;
@@ -29,14 +29,14 @@ public class GenericRepository<TEntity>(AppDbContext ctx) : IGenericRepository<T
         return entity;
     }
 
-    public async Task AddRange(TEntity[] entities, CancellationToken cancellationToken = new())
+    public async Task AddRange(TEntity[] entities, CancellationToken cancellationToken = default)
     {
         _dbSet.AddRange(entities);
         ctx.Entry(entities).State = EntityState.Added;
         await SaveChangesAsync(cancellationToken);
     }
 
-    public async Task AddRangeAsync(TEntity[] entities, CancellationToken cancellationToken = new())
+    public async Task AddRangeAsync(TEntity[] entities, CancellationToken cancellationToken = default)
     {
         await _dbSet.AddRangeAsync(entities, cancellationToken);
         ctx.Entry(entities).State = EntityState.Added;
@@ -76,7 +76,7 @@ public class GenericRepository<TEntity>(AppDbContext ctx) : IGenericRepository<T
 
     #region Update
 
-    public async Task<TEntity> Update(TEntity entity, CancellationToken cancellationToken = new())
+    public async Task<TEntity> Update(TEntity entity, CancellationToken cancellationToken = default)
     {
         _dbSet.Attach(entity);
         ctx.Entry(entity).State = EntityState.Modified;
@@ -84,7 +84,7 @@ public class GenericRepository<TEntity>(AppDbContext ctx) : IGenericRepository<T
         return entity;
     }
 
-    public async Task UpdateRange(TEntity[] entities, CancellationToken cancellationToken = new())
+    public async Task UpdateRange(TEntity[] entities, CancellationToken cancellationToken = default)
     {
         _dbSet.UpdateRange(entities);
         ctx.Entry(entities).State = EntityState.Modified;
@@ -95,13 +95,13 @@ public class GenericRepository<TEntity>(AppDbContext ctx) : IGenericRepository<T
 
     #region Delete
 
-    public async Task HardDelete(TEntity entity, CancellationToken cancellationToken = new())
+    public async Task HardDelete(TEntity entity, CancellationToken cancellationToken = default)
     {
         _dbSet.Remove(entity);
         await SaveChangesAsync(cancellationToken);
     }
 
-    public async Task SoftDelete(TEntity entity, CancellationToken cancellationToken = new())
+    public async Task SoftDelete(TEntity entity, CancellationToken cancellationToken = default)
     {
         if (entity is not BaseEntity baseEntity)
             throw new ArgumentException(ExceptionConstants.BaseEntityException);
@@ -112,14 +112,14 @@ public class GenericRepository<TEntity>(AppDbContext ctx) : IGenericRepository<T
         await SaveChangesAsync(cancellationToken);
     }
 
-    public async Task HardDeleteRange(IEnumerable<TEntity> entities, CancellationToken cancellationToken = new())
+    public async Task HardDeleteRange(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
     {
         _dbSet.RemoveRange(entities);
         await SaveChangesAsync(cancellationToken);
     }
 
     public async Task SoftDeleteRange(IEnumerable<TEntity> entities,
-        CancellationToken cancellationToken = new())
+        CancellationToken cancellationToken = default)
     {
         foreach (var entity in entities)
         {
@@ -138,7 +138,7 @@ public class GenericRepository<TEntity>(AppDbContext ctx) : IGenericRepository<T
 
     #region ProtectedMethods
 
-    protected virtual async Task SaveChangesAsync(CancellationToken cancellationToken = new())
+    protected virtual async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         => await ctx.SaveChangesAsync(cancellationToken);
 
     #endregion

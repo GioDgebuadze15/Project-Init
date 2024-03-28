@@ -9,7 +9,6 @@
 
     <ItemGroup>
         <PackageReference Include="Marten" Version="7.5.0" />
-        <PackageReference Include="MediatR" Version="12.2.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
           <PrivateAssets>all</PrivateAssets>
@@ -19,6 +18,8 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
         <PackageReference Include="Transmogrify" Version="1.0.4" />
         <PackageReference Include="Transmogrify.DependencyInjection.Newtonsoft" Version="1.0.4" />
+        <PackageReference Include="WolverineFx" Version="2.1.2" />
+        <PackageReference Include="WolverineFx.Marten" Version="2.1.2" />
     </ItemGroup>
 
     <ItemGroup>

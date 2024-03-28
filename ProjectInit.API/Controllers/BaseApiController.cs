@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Wolverine;
 
 namespace ProjectInit.API.Controllers;
 
@@ -8,8 +8,8 @@ namespace ProjectInit.API.Controllers;
 [Route("api/[Controller]")]
 public class BaseApiController : Controller
 {
-    private IMediator? _mediator;
-    protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<IMediator>();
+    private IMessageBus? _bus;
+    protected IMessageBus Bus => _bus ??= HttpContext.RequestServices.GetRequiredService<IMessageBus>();
 
     protected string? UserId =>
         HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier)
