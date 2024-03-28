@@ -1,9 +1,10 @@
 ﻿using ProjectInit.Domain.Aggregates.Common;
+using ProjectInit.Domain.Entities.Common;
 using ProjectInit.Domain.Enums;
 
 namespace ProjectInit.Domain.Entities;
 
-public class FileEntity : AggregateRoot<int>
+public class FileEntity : BaseEntity<int>
 {
     public FileEntity()
     {
