@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using System.Reflection;
 using ProjectInit.API.Middlewares;
+using ProjectInit.Application.Behaviors;
 using ProjectInit.Application.Features.FileFeatures.Commands.Create;
 using ProjectInit.Infrastructure.ServiceRegistrations;
 using ProjectInit.Infrastructure.Services.Language;
@@ -9,6 +10,7 @@ using ProjectInit.Shared.Constants;
 using ProjectInit.Shared.Helpers;
 using Transmogrify.DependencyInjection.Newtonsoft;
 using Wolverine;
+using Wolverine.FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +36,9 @@ builder.Services.AddNewtonsoftTransmogrify(config =>
 builder.Host.UseWolverine(options =>
 {
     options.Discovery.IncludeAssembly(typeof(CreateFile).GetTypeInfo().Assembly);
+
+    options.UseFluentValidation();
+    options.Services.AddSingleton(typeof(IFailureAction<>), typeof(FluentValidationBehavior<>));
 });
 
 builder.Services

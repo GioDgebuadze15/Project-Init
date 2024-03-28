@@ -3,16 +3,23 @@
 public class BaseResponse<T> : BaseResponse
     where T : notnull
 {
-    public T? Value { get; }
+    public T? Data { get; }
+    public T? Errors { get; }
 
     public BaseResponse(string message)
         : base(message)
     {
     }
 
-    public BaseResponse(string message, T value)
+    public BaseResponse(string message, T data)
         : base(message, true)
     {
-        Value = value;
+        Data = data;
+    }
+
+    public BaseResponse(string message, T errors, bool success)
+        : base(message, success)
+    {
+        Errors = errors;
     }
 }

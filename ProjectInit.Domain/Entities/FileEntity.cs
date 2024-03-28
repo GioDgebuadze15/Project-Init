@@ -1,5 +1,4 @@
-﻿using ProjectInit.Domain.Aggregates.Common;
-using ProjectInit.Domain.Entities.Common;
+﻿using ProjectInit.Domain.Entities.Common;
 using ProjectInit.Domain.Enums;
 
 namespace ProjectInit.Domain.Entities;

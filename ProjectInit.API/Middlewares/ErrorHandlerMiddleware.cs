@@ -28,7 +28,7 @@ public class ErrorHandlerMiddleware(
             using var scope = serviceProvider.CreateScope();
             var iTranslator = scope.ServiceProvider.GetRequiredService<ITranslator>();
             var iDocumentSession = scope.ServiceProvider.GetRequiredService<IDocumentSession>();
-            
+
             var response = context.Response;
             response.ContentType = ApiConstants.DefaultContentType;
             BaseResponse responseModel;
@@ -39,9 +39,9 @@ public class ErrorHandlerMiddleware(
                     response.StatusCode = StatusCodes.Status400BadRequest;
                     responseModel = BaseResponse.Fail(e.Message);
                     break;
-                case FluentValidation.ValidationException:
+                case FluentValidationException exception:
                     response.StatusCode = StatusCodes.Status422UnprocessableEntity;
-                    responseModel = BaseResponse.Fail(e.Message);
+                    responseModel = BaseResponse.Fail(exception.Message, exception.ValidationErrors);
                     break;
                 case EntityNotFoundException exception:
                     response.StatusCode = StatusCodes.Status404NotFound;
@@ -77,7 +77,7 @@ public class ErrorHandlerMiddleware(
             var result = JsonConvert.SerializeObject(responseModel);
             await response.WriteAsync(result);
             _logger.LogError(e, LoggerConstants.LoggerMessage);
-            
+
             iDocumentSession.Store(new Error(e));
             await iDocumentSession.SaveChangesAsync();
         }

@@ -19,6 +19,7 @@
         <PackageReference Include="Transmogrify" Version="1.0.4" />
         <PackageReference Include="Transmogrify.DependencyInjection.Newtonsoft" Version="1.0.4" />
         <PackageReference Include="WolverineFx" Version="2.1.2" />
+        <PackageReference Include="WolverineFx.FluentValidation" Version="2.1.2" />
         <PackageReference Include="WolverineFx.Marten" Version="2.1.2" />
     </ItemGroup>
 
