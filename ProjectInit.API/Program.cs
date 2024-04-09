@@ -6,6 +6,7 @@ using ProjectInit.Application.Features.FileFeatures.Commands.Create;
 using ProjectInit.Infrastructure.ServiceRegistrations;
 using ProjectInit.Infrastructure.Services.Language;
 using ProjectInit.Persistence.DatabaseRegistrations;
+using ProjectInit.Persistence.Seed;
 using ProjectInit.Shared.Constants;
 using ProjectInit.Shared.Helpers;
 using Transmogrify.DependencyInjection.Newtonsoft;
@@ -67,5 +68,7 @@ app.UseMiddleware<DatabaseMiddleware>();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.Seed();
 
 app.Run();
