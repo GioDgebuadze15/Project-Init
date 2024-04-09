@@ -3,6 +3,7 @@ using System.Reflection;
 using ProjectInit.API.Middlewares;
 using ProjectInit.Application.Behaviors;
 using ProjectInit.Application.Features.FileFeatures.Commands.Create;
+using ProjectInit.Domain.Handlers.NotificationHandler;
 using ProjectInit.Infrastructure.ServiceRegistrations;
 using ProjectInit.Infrastructure.Services.Language;
 using ProjectInit.Persistence.DatabaseRegistrations;
@@ -35,6 +36,7 @@ builder.Services.AddNewtonsoftTransmogrify(config =>
 builder.Host.UseWolverine(options =>
 {
     options.Discovery.IncludeAssembly(typeof(CreateFile).GetTypeInfo().Assembly);
+    options.Discovery.IncludeAssembly(typeof(INotificationHandler<>).GetTypeInfo().Assembly);
 
     options.UseFluentValidation();
     options.Services.AddSingleton(typeof(IFailureAction<>), typeof(FluentValidationBehavior<>));

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Security.Claims;
+using System.Threading.Channels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -8,7 +9,6 @@ using ProjectInit.Domain.Aggregates.Common;
 using ProjectInit.Domain.Entities;
 using ProjectInit.Domain.Entities.Common;
 using ProjectInit.Domain.Handlers.NotificationHandler;
-using ProjectInit.Shared.Extensions;
 using Wolverine;
 
 namespace ProjectInit.Persistence;
@@ -16,7 +16,8 @@ namespace ProjectInit.Persistence;
 public class AppDbContext(
     DbContextOptions<AppDbContext> options,
     IMessageBus bus,
-    IHttpContextAccessor httpContextAccessor
+    IHttpContextAccessor httpContextAccessor,
+    Channel<INotification> channel
 )
     : IdentityDbContext<IdentityUser>(options)
 {
@@ -37,14 +38,13 @@ public class AppDbContext(
 
             if (!string.IsNullOrWhiteSpace(userId))
             {
-                modifiedEntity.CreateOrUpdateEntity(userId);
+                modifiedEntity.CreateOrUpdate(userId);
             }
 
-            modifiedEntity.UpdateEntity();
+            modifiedEntity.Update();
         }
 
-        var events = GetDomainEvents();
-        await bus.DispatchDomainEvents(events);
+        await ProduceDomainEvents();
 
         var response = await base.SaveChangesAsync(cancellationToken);
         entities.ForEach(entity => entity.State = EntityState.Detached);
@@ -54,7 +54,7 @@ public class AppDbContext(
         return response;
     }
 
-    private ImmutableArray<INotification> GetDomainEvents()
+    private async Task ProduceDomainEvents()
     {
         var domainEntities = ChangeTracker
             .Entries<IAggregateRoot>()
@@ -68,6 +68,9 @@ public class AppDbContext(
 
         domainEntities.ForEach(entity => entity.ClearDomainEvents());
 
-        return result;
+        foreach (var notification in result)
+        {
+            await channel.Writer.WriteAsync(notification);
+        }
     }
 }

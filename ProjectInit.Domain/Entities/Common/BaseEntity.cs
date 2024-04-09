@@ -25,13 +25,13 @@ public abstract class BaseEntity
     }
 
 
-    public void CreateOrUpdateEntity(string userId)
+    public void CreateOrUpdate(string userId)
     {
         CreatedBy ??= userId;
         UpdatedBy = userId;
     }
 
-    public void UpdateEntity() => UpdatedAt = DateTimeOffset.Now;
+    public void Update() => UpdatedAt = DateTimeOffset.Now;
 
-    public void SoftDeleteEntity() => Deleted = true;
+    public void SoftDelete() => Deleted = true;
 }

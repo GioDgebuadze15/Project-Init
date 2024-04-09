@@ -8,7 +8,8 @@ public static class DatabaseSeeder
 {
     public static IApplicationBuilder Seed(this IApplicationBuilder @this)
     {
-        var ctx = @this.ApplicationServices.GetRequiredService<AppDbContext>();
+        using var scope = @this.ApplicationServices.CreateScope();
+        var ctx = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         ApplyPendingMigrations(ctx);
 
         return @this;
@@ -16,9 +17,6 @@ public static class DatabaseSeeder
 
     private static void ApplyPendingMigrations(AppDbContext ctx)
     {
-        if (ctx.Database.IsRelational() && ctx.Database.GetPendingMigrations().Any())
-        {
-            ctx.Database.Migrate();
-        }
+        if (ctx.Database.IsRelational() && ctx.Database.GetPendingMigrations().Any()) ctx.Database.Migrate();
     }
 }

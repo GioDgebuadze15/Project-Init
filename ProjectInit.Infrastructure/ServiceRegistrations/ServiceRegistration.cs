@@ -1,6 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Threading.Channels;
+using Microsoft.Extensions.DependencyInjection;
+using ProjectInit.Domain.Handlers.NotificationHandler;
 using ProjectInit.Infrastructure.Repositories.GenericRepository;
 using ProjectInit.Infrastructure.Services.File;
+using ProjectInit.Infrastructure.Services.Notification;
 using Transmogrify;
 
 namespace ProjectInit.Infrastructure.ServiceRegistrations;
@@ -12,6 +15,9 @@ public static class ServiceRegistration
         @this.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         @this.AddScoped<ITranslator, Translator>();
         @this.AddScoped<IFileService, FileService>();
+
+        @this.AddSingleton(Channel.CreateUnbounded<INotification>());
+        @this.AddHostedService<NotificationDispatcher>();
 
         return @this;
     }
