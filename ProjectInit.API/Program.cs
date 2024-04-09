@@ -14,8 +14,6 @@ using Wolverine.FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
-AppContext.SetSwitch(DatabaseConstants.PostgreBehavior, true);
-
 var loggerFactory = builder.Services.AddLoggerFactory(builder.Environment);
 
 builder.Services.AddControllers();
@@ -64,6 +62,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseMiddleware<ErrorHandlerMiddleware>();
+app.UseMiddleware<DatabaseMiddleware>();
 
 app.UseAuthorization();
 

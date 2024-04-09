@@ -14,9 +14,15 @@ namespace ProjectInit.Persistence.DatabaseRegistrations;
 
 public static class DatabaseRegistration
 {
-    public static IServiceCollection AddDatabase(this IServiceCollection @this, IConfiguration configuration,
-        ILoggerFactory iLoggerFactory, IHostEnvironment env)
+    public static IServiceCollection AddDatabase(
+        this IServiceCollection @this,
+        IConfiguration configuration,
+        ILoggerFactory iLoggerFactory,
+        IHostEnvironment env
+    )
     {
+        AppContext.SetSwitch(DatabaseConstants.PostgreBehavior, true);
+
         @this.AddIdentity<IdentityUser, IdentityRole>(IdentitySetupAction(env))
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
