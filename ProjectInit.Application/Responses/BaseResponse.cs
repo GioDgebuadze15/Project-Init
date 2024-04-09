@@ -12,7 +12,7 @@ public class BaseResponse
     public bool Success { get; }
 
     public static BaseResponse Ok(string message) => new(message, true);
-    public static BaseResponse<T> Ok<T>(string message, T data) where T : notnull => new(message, data);
+    public static BaseResponse<T> Ok<T>(string message, T data) where T : notnull => new(message, data, true);
     public static BaseResponse Fail(string message) => new(message);
     public static BaseResponse<T> Fail<T>(string message, T errors) where T : notnull => new(message, errors, false);
 }
