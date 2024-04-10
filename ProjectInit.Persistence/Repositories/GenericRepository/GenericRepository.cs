@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectInit.Domain.Entities.Common;
-using ProjectInit.Persistence;
 using ProjectInit.Shared.Constants;
 using ProjectInit.Shared.Exceptions;
 
-namespace ProjectInit.Infrastructure.Repositories.GenericRepository;
+namespace ProjectInit.Persistence.Repositories.GenericRepository;
 
 public class GenericRepository<TEntity>(AppDbContext ctx) : IGenericRepository<TEntity>
     where TEntity : class

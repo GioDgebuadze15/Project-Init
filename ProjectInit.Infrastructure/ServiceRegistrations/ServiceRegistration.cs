@@ -1,9 +1,9 @@
 ﻿using System.Threading.Channels;
 using Microsoft.Extensions.DependencyInjection;
 using ProjectInit.Domain.Handlers.NotificationHandler;
-using ProjectInit.Infrastructure.Repositories.GenericRepository;
 using ProjectInit.Infrastructure.Services.File;
 using ProjectInit.Infrastructure.Services.Notification;
+using ProjectInit.Persistence.Repositories.GenericRepository;
 using Transmogrify;
 
 namespace ProjectInit.Infrastructure.ServiceRegistrations;

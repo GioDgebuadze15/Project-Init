@@ -9,7 +9,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ProjectInit.Persistence\ProjectInit.Persistence.csproj" />
-      <ProjectReference Include="..\ProjectInit.Shared\ProjectInit.Shared.csproj" />
     </ItemGroup>
     
     <ItemGroup>

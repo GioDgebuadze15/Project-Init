@@ -25,7 +25,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ProjectInit.Domain\ProjectInit.Domain.csproj"/>
         <ProjectReference Include="..\ProjectInit.Shared\ProjectInit.Shared.csproj" />
     </ItemGroup>
 

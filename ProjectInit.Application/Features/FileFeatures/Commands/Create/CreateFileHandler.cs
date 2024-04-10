@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using ProjectInit.Application.Responses;
 using ProjectInit.Domain.Entities;
-using ProjectInit.Infrastructure.Repositories.GenericRepository;
 using ProjectInit.Infrastructure.Services.File;
+using ProjectInit.Persistence.Repositories.GenericRepository;
 using Transmogrify;
 
 namespace ProjectInit.Application.Features.FileFeatures.Commands.Create;
